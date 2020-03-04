@@ -49,8 +49,7 @@ if ($regTotal[0][0] == 0) {
 			<option value="c">Continuo (Con Decimales)</option>
 		</select>
 		<br>
-		<!-- <a class="btn btn-danger" href="./" >Atrás</a> -->
-		<button class="btn btn-primary" onclick="insertar();">Enviar</button>
+		<button id="btnInsertar" class="btn btn-primary" onclick="insertar();">Enviar</button>
 <?php
 	}
 

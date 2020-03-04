@@ -5,7 +5,7 @@ class Paginas{
 	public function enlacesPaginasModel($enlaces){
 
 
-		if($enlaces == "t" || $enlaces == "g" || $enlaces == "p"){
+		if($enlaces == "t" || $enlaces == "g" || $enlaces == "p" || $enlaces == "e"){
 
 			$module =  "views/modules/".$enlaces.".php";
 		

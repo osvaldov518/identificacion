@@ -5,10 +5,10 @@ include '../../../dbcon/conectar_mysql.php';
 $db = new ConectarMySQL();
 $totalRegistros=$db->traer_matriz($db->sentencia("SELECT COUNT(*) FROM datosrandom;"));
 if ($totalRegistros[0][0]>0) {
-	for ($i=1; $i <= 1500; $i++) {
+	for ($i=1; $i <= 25; $i++) {
 		
 		if ($p_tipodato=='d') {
-			$val=number_format(mt_rand(1,100));
+			$val=number_format(mt_rand(1,777));
 		}else{
 			$val=number_format((mt_rand(1,777)/5),3);
 		}
@@ -16,10 +16,10 @@ if ($totalRegistros[0][0]>0) {
 		$registros=$db->sentencia($sql);
 	}
 }else{
-	for ($i=1; $i <= 1500; $i++) {
+	for ($i=1; $i <= 25; $i++) {
 		
 		if ($p_tipodato=='d') {
-			$val=number_format(mt_rand(1,100));
+			$val=number_format(mt_rand(1,777));
 		}else{
 			$val=number_format((mt_rand(1,777)/5),3);
 		}

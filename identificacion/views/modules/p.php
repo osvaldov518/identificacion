@@ -25,7 +25,6 @@ $resultado=$db->traer_matriz($registros);
 			<div id="mensaje">
 				
 			</div>
-
 			<div id="exito" style="display: none"></div>
 	</div>
 </div>
