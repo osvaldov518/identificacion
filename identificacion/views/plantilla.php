@@ -13,6 +13,7 @@
   <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://cdn.datatables.net/1.10.20/css/dataTables.bootstrap4.min.css" rel="stylesheet">
   <link href="css/simple-sidebar.css" rel="stylesheet">
+  <link rel="icon" type="image/png" href="https://cdn.iconscout.com/icon/premium/png-512-thumb/business-model-1538255-1303828.png">
   
   <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>

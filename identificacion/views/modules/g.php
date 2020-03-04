@@ -4,6 +4,7 @@ $db = new ConectarMySQL();
 $sql="SELECT * FROM datosrandom";
 $registros=$db->sentencia($sql);
 $resultado=$db->traer_matriz($registros);
+$labels=[];$col1=[];$col2=[];$col3=[];$col4=[];$col5=[];$col6=[];
 
 for ($i=0; $i < count($resultado); $i++) { 
 	$labels[]=$resultado[$i][0];
@@ -78,20 +79,7 @@ for ($i=0; $i < count($resultado); $i++) {
 	    data: datax,
 
 	    // Configuration options go here
-	    options: {
-	    	plugins: {
-	    	      zoom: {
-	    	        pan: {
-	    	          enabled: true,
-	    	          mode: 'x'
-	    	        },
-	    	        zoom: {
-	    	          enabled: true,
-	    	          mode: 'x'
-	    	        }
-	    	      }
-	    	    },  
-	    }
+	    options: {}
 	});
 
 </script>
