@@ -4,8 +4,9 @@ $p_tipodato=$_POST["tipoDato"];
 include '../../../dbcon/conectar_mysql.php';
 $db = new ConectarMySQL();
 $totalRegistros=$db->traer_matriz($db->sentencia("SELECT COUNT(*) FROM datosrandom;"));
+
 if ($totalRegistros[0][0]>0) {
-	for ($i=1; $i <= 1500; $i++) {
+	for ($i=1; $i <= 20; $i++) {
 		
 		if ($p_tipodato=='d') {
 			$val=number_format(mt_rand(1,777));
@@ -16,7 +17,7 @@ if ($totalRegistros[0][0]>0) {
 		$registros=$db->sentencia($sql);
 	}
 }else{
-	for ($i=1; $i <= 1500; $i++) {
+	for ($i=1; $i <= 20; $i++) {
 		
 		if ($p_tipodato=='d') {
 			$val=number_format(mt_rand(1,777));
@@ -27,6 +28,11 @@ if ($totalRegistros[0][0]>0) {
 		$registros=$db->sentencia($sql);
 	}
 }
+
+// 
+	$sql = "CALL generar_tendencia('$p_columna');";
+	$registros=$db->sentencia($sql);
+// 
 ?>
 <br>
 <div class="alert alert-dismissable alert-success">

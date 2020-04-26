@@ -2,7 +2,7 @@
 include 'dbcon/conectar_mysql.php';
 $db = new ConectarMySQL();
 
-for ($i=1; $i <= 1500; $i++) { 
+for ($i=1; $i <= 20; $i++) { 
 	$val1 = number_format((mt_rand(1,100)/5),3);
 	$val2 = number_format((mt_rand(1,100)/5),3);
 	$val3 = number_format((mt_rand(1,100)/5),3);
