@@ -5,7 +5,7 @@ $sql="SELECT * FROM datosrandom LIMIT 30;";
 $registros=$db->sentencia($sql);
 $resultado=$db->traer_matriz($registros);
 $labels=[];$col1=[];$col2=[];$col3=[];$col4=[];$col5=[];$col6=[];
-$tendencia1=[];$tendencia2=[];$tendencia3=[];$tendencia4=[];$tendencia5=[];$tendencia6=[];
+$colsp1=[];$colsp2=[];$colsp3=[];$colsp4=[];$colsp5=[];$colsp6=[];
 
 for ($i=0; $i < count($resultado); $i++) { 
 	$labels[]=$resultado[$i][0];
@@ -15,12 +15,12 @@ for ($i=0; $i < count($resultado); $i++) {
 	$col4[]=$resultado[$i][4];
 	$col5[]=$resultado[$i][5];
 	$col6[]=$resultado[$i][6];
-	$tendencia1[]=$resultado[$i][7];
-	$tendencia2[]=$resultado[$i][8];
-	$tendencia3[]=$resultado[$i][9];
-	$tendencia4[]=$resultado[$i][10];
-	$tendencia5[]=$resultado[$i][11];
-	$tendencia6[]=$resultado[$i][12];
+	$colsp1[]=$resultado[$i][13];
+	$colsp2[]=$resultado[$i][14];
+	$colsp3[]=$resultado[$i][15];
+	$colsp4[]=$resultado[$i][16];
+	$colsp5[]=$resultado[$i][17];
+	$colsp6[]=$resultado[$i][18];
 }
 
 ?>
@@ -44,10 +44,10 @@ for ($i=0; $i < count($resultado); $i++) {
 	      spanGaps: false,
 	      backgroundColor: "transparent",
 	    }, {
-	      label: "Tendencia 1",
-	      data: <?php echo json_encode($tendencia1) ?>,
+	      label: "Columna 1 Sin Picos",
+	      data: <?php echo json_encode($colsp1) ?>,
 	      borderDash: [5,7],
-	      lineTension: 0,
+	      lineTension: 0.3,
 	      borderColor: "firebrick",
 	      spanGaps: false,
 	      backgroundColor: "transparent",
@@ -60,11 +60,11 @@ for ($i=0; $i < count($resultado); $i++) {
 	      spanGaps: false,
 	      backgroundColor: "transparent",
 	    }, {
-	      label: "Tendencia 2",
-	      data: <?php echo json_encode($tendencia2) ?>,
+	      label: "Columna 2 Sin Picos",
+	      data: <?php echo json_encode($colsp2) ?>,
 	      borderDash: [5,7],
 	      hidden: true,
-	      lineTension: 0,
+	      lineTension: 0.3,
 	      borderColor: "navy",
 	      spanGaps: false,
 	      backgroundColor: "transparent",
@@ -77,11 +77,11 @@ for ($i=0; $i < count($resultado); $i++) {
 	      spanGaps: false,
 	      backgroundColor: "transparent",
 	    }, {
-	      label: "Tendencia 3",
-	      data: <?php echo json_encode($tendencia3) ?>,
+	      label: "Columna 3 Sin Picos",
+	      data: <?php echo json_encode($colsp3) ?>,
 	      borderDash: [5,7],
 	      hidden: true,
-	      lineTension: 0,
+	      lineTension: 0.3,
 	      borderColor: "darkviolet",
 	      spanGaps: false,
 	      backgroundColor: "transparent",
@@ -94,11 +94,11 @@ for ($i=0; $i < count($resultado); $i++) {
 	      spanGaps: false,
 	      backgroundColor: "transparent",
 	    }, {
-	      label: "Tendencia 4",
-	      data: <?php echo json_encode($tendencia4) ?>,
+	      label: "Columna 4 Sin Picos",
+	      data: <?php echo json_encode($colsp4) ?>,
 	      borderDash: [5,7],
 	      hidden: true,
-	      lineTension: 0,
+	      lineTension: 0.3,
 	      borderColor: "limegreen",
 	      spanGaps: false,
 	      backgroundColor: "transparent",
@@ -111,11 +111,11 @@ for ($i=0; $i < count($resultado); $i++) {
 	      spanGaps: false,
 	      backgroundColor: "transparent",
 	    }, {
-	      label: "Tendencia 5",
-	      data: <?php echo json_encode($tendencia5) ?>,
+	      label: "Columna 5 Sin Picos",
+	      data: <?php echo json_encode($colsp5) ?>,
 	      borderDash: [5,7],
 	      hidden: true,
-	      lineTension: 0,
+	      lineTension: 0.3,
 	      borderColor: "gray",
 	      spanGaps: false,
 	      backgroundColor: "transparent",
@@ -128,11 +128,11 @@ for ($i=0; $i < count($resultado); $i++) {
 	      spanGaps: false,
 	      backgroundColor: "transparent",
 	    }, {
-	      label: "Tendencia 6",
-	      data: <?php echo json_encode($tendencia6) ?>,
+	      label: "Columna 6 Sin Picos",
+	      data: <?php echo json_encode($colsp6) ?>,
 	      borderDash: [5,7],
 	      hidden: true,
-	      lineTension: 0,
+	      lineTension: 0.3,
 	      borderColor: "gold",
 	      spanGaps: false,
 	      backgroundColor: "transparent",

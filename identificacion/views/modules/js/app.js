@@ -63,3 +63,37 @@ function eliminar() {
                 });
         }
 }
+
+function calcularCorrelacion() {
+    var parametros = {
+            "param1" : $('#columnaParam1').val(),
+            "param2" : $('#columnaParam2').val()
+    };
+    $.ajax({
+                data:  parametros, //datos que se envian a traves de ajax
+                url:   'views/modules/js/correlacion.php', //archivo que recibe la peticion
+                type:  'post', //método de envio
+                success:  function (response) { //una vez que el archivo recibe el request lo procesa y lo devuelve
+                        $("#analisis").html(response);
+                        $("#analisis").fadeIn();                        
+                }
+        });
+}
+
+function tablaAnalisisCorrelacion() {
+    var parametros = {
+            "label1" : $('#columnaParam1 option:selected').text(),
+            "label2" : $('#columnaParam2 option:selected').text(),
+            "param1" : $('#columnaParam1').val(),
+            "param2" : $('#columnaParam2').val()
+    };
+    $.ajax({
+                data:  parametros, //datos que se envian a traves de ajax
+                url:   'views/modules/js/t_analisis_correlacion.php', //archivo que recibe la peticion
+                type:  'post', //método de envio
+                success:  function (response) { //una vez que el archivo recibe el request lo procesa y lo devuelve
+                        $("#tabla").html(response);
+                        $("#tabla").fadeIn();                        
+                }
+        });
+}

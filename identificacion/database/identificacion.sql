@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 27-04-2020 a las 01:37:52
+-- Tiempo de generación: 27-04-2020 a las 06:18:00
 -- Versión del servidor: 10.4.11-MariaDB
 -- Versión de PHP: 7.4.4
 
@@ -27,6 +27,64 @@ DELIMITER $$
 --
 -- Procedimientos
 --
+DROP PROCEDURE IF EXISTS `analisis_correlacion`$$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `analisis_correlacion` (IN `p_columnax` VARCHAR(50), IN `p_columnay` VARCHAR(50))  BEGIN
+	SET @str = 'select 
+				((sum(?par1*?par2)/count(*))-(sum(?par1)/count(*))*(sum(?par2)/count(*)))/
+                (sqrt((sum(?par1*?par1)/count(*))-((sum(?par1)/count(*))*(sum(?par1)/count(*))))
+                *sqrt((sum(?par2*?par2)/count(*))-((sum(?par2)/count(*))*(sum(?par2)/count(*))))) r
+				from identificacion.datosrandom';
+	
+    SET @str = REPLACE(@str,'?par1',p_columnax);
+    SET @str = REPLACE(@str,'?par2',p_columnay);
+	
+    PREPARE stmt FROM @str;
+    EXECUTE stmt;
+
+END$$
+
+DROP PROCEDURE IF EXISTS `corte_de_picos`$$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `corte_de_picos` (IN `p_nombre_columna` VARCHAR(50))  BEGIN
+	DECLARE numreg INT;
+    DECLARE i INT;
+    DECLARE nom_sp VARCHAR(50);  
+	SET i = 1;
+    
+	SET @str = 'select max(?col)*.7 into @amplitud from datosrandom';
+    SET @str = REPLACE(@str,'?col',p_nombre_columna);
+    
+    PREPARE stmt FROM @str;
+    EXECUTE stmt;
+    
+	SET numreg = (SELECT COUNT(*) FROM datosrandom);
+    SET nom_sp = (SELECT sinpicos FROM t_control_columnas WHERE columna = p_nombre_columna);
+    
+    SET @vlrResta = @amplitud*.35;
+    
+	actualiza_col_sin_picos:LOOP
+		IF i > numreg THEN
+			LEAVE actualiza_col_sin_picos;
+		END IF;
+        
+		SET @str2 = 'UPDATE datosrandom
+					 SET ?colsp = CASE WHEN ?ncol > @amplitud THEN ?ncol - @vlrResta
+								  ELSE ?ncol END
+					 WHERE id = ?i ';
+        
+        SET @str2 = REPLACE(@str2,'?colsp',nom_sp);
+        SET @str2 = REPLACE(@str2,'?ncol',p_nombre_columna);
+        SET @str2 = REPLACE(@str2,'?i',i);
+        
+		PREPARE stmt2 FROM @str2;
+		EXECUTE stmt2;
+        
+		SET i = i + 1;
+		ITERATE actualiza_col_sin_picos;
+        
+	END LOOP;
+    
+END$$
+
 DROP PROCEDURE IF EXISTS `generar_tendencia`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `generar_tendencia` (IN `p_nombre_columna` VARCHAR(50))  BEGIN
     DECLARE vlr_m DECIMAL(15,2);
@@ -70,7 +128,7 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `generar_tendencia` (IN `p_nombre_co
 			LEAVE actualiza_tendencia;
 		END IF;
         
-		SET @str3 = 'UPDATE datosrandom
+		SET @str3 = 'UPDATE identificacion.datosrandom
                 SET ?tendencia = ( ?vlr_m * id + ?vlr_b )
                 WHERE id = ?i ';
         
@@ -100,8 +158,8 @@ DELIMITER ;
 --
 -- Estructura de tabla para la tabla `datosrandom`
 --
--- Creación: 26-04-2020 a las 22:55:49
--- Última actualización: 26-04-2020 a las 23:31:35
+-- Creación: 27-04-2020 a las 02:17:53
+-- Última actualización: 27-04-2020 a las 04:13:01
 --
 
 DROP TABLE IF EXISTS `datosrandom`;
@@ -118,7 +176,13 @@ CREATE TABLE `datosrandom` (
   `tendencia3` float DEFAULT NULL,
   `tendencia4` float DEFAULT NULL,
   `tendencia5` float DEFAULT NULL,
-  `tendencia6` float DEFAULT NULL
+  `tendencia6` float DEFAULT NULL,
+  `colsp1` float DEFAULT NULL,
+  `colsp2` float DEFAULT NULL,
+  `colsp3` float DEFAULT NULL,
+  `colsp4` float DEFAULT NULL,
+  `colsp5` float DEFAULT NULL,
+  `colsp6` float DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
@@ -127,7 +191,7 @@ CREATE TABLE `datosrandom` (
 -- Estructura de tabla para la tabla `log_update`
 --
 -- Creación: 26-04-2020 a las 23:02:53
--- Última actualización: 26-04-2020 a las 23:31:35
+-- Última actualización: 27-04-2020 a las 04:13:00
 --
 
 DROP TABLE IF EXISTS `log_update`;
@@ -141,12 +205,12 @@ CREATE TABLE `log_update` (
 -- Estructura de tabla para la tabla `new_table`
 --
 -- Creación: 26-04-2020 a las 22:39:56
--- Última actualización: 26-04-2020 a las 22:45:54
+-- Última actualización: 27-04-2020 a las 02:45:04
 --
 
 DROP TABLE IF EXISTS `new_table`;
 CREATE TABLE `new_table` (
-  `dato` int(11) NOT NULL
+  `dato` float NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
@@ -154,14 +218,15 @@ CREATE TABLE `new_table` (
 --
 -- Estructura de tabla para la tabla `t_control_columnas`
 --
--- Creación: 26-04-2020 a las 22:22:40
--- Última actualización: 26-04-2020 a las 22:25:35
+-- Creación: 27-04-2020 a las 02:51:26
+-- Última actualización: 27-04-2020 a las 02:57:20
 --
 
 DROP TABLE IF EXISTS `t_control_columnas`;
 CREATE TABLE `t_control_columnas` (
   `columna` varchar(100) DEFAULT NULL,
-  `tendencias` varchar(100) DEFAULT NULL
+  `tendencias` varchar(100) DEFAULT NULL,
+  `sinpicos` varchar(100) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
@@ -173,13 +238,13 @@ TRUNCATE TABLE `t_control_columnas`;
 -- Volcado de datos para la tabla `t_control_columnas`
 --
 
-INSERT INTO `t_control_columnas` (`columna`, `tendencias`) VALUES
-('col1', 'tendencia1'),
-('col2', 'tendencia2'),
-('col3', 'tendencia3'),
-('col4', 'tendencia4'),
-('col5', 'tendencia5'),
-('col6', 'tendencia6');
+INSERT INTO `t_control_columnas` (`columna`, `tendencias`, `sinpicos`) VALUES
+('col1', 'tendencia1', 'colsp1'),
+('col2', 'tendencia2', 'colsp2'),
+('col3', 'tendencia3', 'colsp3'),
+('col4', 'tendencia4', 'colsp4'),
+('col5', 'tendencia5', 'colsp5'),
+('col6', 'tendencia6', 'colsp6');
 
 --
 -- Índices para tablas volcadas
